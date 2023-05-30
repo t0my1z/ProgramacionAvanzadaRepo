@@ -18,6 +18,9 @@ public class CanvasManager : GenericSingleton<CanvasManager>
     [SerializeField] GameObject _alertTxtObj;
     [SerializeField] TMP_InputField _numberInputField;
     [SerializeField] Button _attackButton;
+    [SerializeField] Button _useItemButton;
+    [SerializeField] GameObject _consumableItemsButtonPrefabs;
+    [SerializeField] GameObject _usableItemsPanel;
     [SerializeField] Image _playerHealthBar;
     [SerializeField] Image _enemyHealthBar;
     [SerializeField] TextMeshProUGUI _enemyTmPro;
@@ -29,6 +32,29 @@ public class CanvasManager : GenericSingleton<CanvasManager>
         CombatManager.Instance.SetEnemyHealth += SetEnemyHealthBar;
         CombatManager.Instance.SetData += SetDataInfo;
 
+    }
+
+    private class ConsumableItemUI 
+    {
+        Button _consumableButton;
+        ConsumableItem _item;
+
+        public ConsumableItemUI(Button button, ConsumableItem item)
+        {
+            _consumableButton = button;
+            _item = item;
+        }
+
+        public void SetButtonEventToItem()
+        {
+            _consumableButton.onClick.AddListener(_item.Interact);
+            _consumableButton.onClick.AddListener(DestroyGameObject);
+        }
+
+        public void DestroyGameObject()
+        {
+            Destroy(_consumableButton.gameObject);
+        }
     }
 
     public void StartCombatButton()
@@ -58,6 +84,11 @@ public class CanvasManager : GenericSingleton<CanvasManager>
     public void EnableAttackButton(bool enable)
     {
         _attackButton.interactable = enable;
+    }
+
+    public void EnableUseItemButton(bool enable) 
+    {
+        _useItemButton.interactable = enable;
     }
 
     public void SetEnemyData(string name)
@@ -92,5 +123,21 @@ public class CanvasManager : GenericSingleton<CanvasManager>
     public void SetDataInfo(string newData)
     {
         _dataTxtPro.text = newData;
+    }
+
+    public void CreateConsumableButton(ConsumableItem item)
+    {
+        GameObject instantiatedButton = Instantiate(_consumableItemsButtonPrefabs, _usableItemsPanel.transform);
+        ConsumableItemUI consumItem = new ConsumableItemUI(instantiatedButton.GetComponent<Button>(), item);
+        consumItem.SetButtonEventToItem();
+        instantiatedButton.GetComponentInChildren<TextMeshProUGUI>().text = item.Name;
+    }
+
+    public void DestroyConsumableButtons()
+    {
+        foreach (Button item in _usableItemsPanel.GetComponentsInChildren<Button>())
+        {
+            Destroy(item.gameObject);
+        }
     }
 }

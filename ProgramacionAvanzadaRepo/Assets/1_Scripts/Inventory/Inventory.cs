@@ -91,12 +91,12 @@ public class Inventory : MonoBehaviour
         if (PlayerEquipment[newEquipment.bodyPart] == null)
         {
             AddStats(newEquipment);
-            Debug.Log("Has añadido la pieza del " + newEquipment.bodyPart + "por " + newEquipment.name);
+            Debug.Log("Has añadido la pieza del " + newEquipment.bodyPart + "por " + newEquipment.Name);
         }
         if (PlayerEquipment.ContainsKey(newEquipment.bodyPart))
         {
             PlayerEquipment[newEquipment.bodyPart] = newEquipment;
-            Debug.Log("Has sustituido la pieza de " + newEquipment.bodyPart + "por " + newEquipment.name);
+            Debug.Log("Has sustituido la pieza de " + newEquipment.bodyPart + "por " + newEquipment.Name);
             UpdateStats();
         }
     }
@@ -116,7 +116,7 @@ public class Inventory : MonoBehaviour
         foreach (KeyValuePair<BodyPart, EquipmentItem> item in PlayerEquipment)
         {
             RefreshItemStats(item.Value);
-            Debug.Log(item.Key + ": " + item.Value.name);
+            Debug.Log(item.Key + ": " + item.Value.Name);
         }
     }
 

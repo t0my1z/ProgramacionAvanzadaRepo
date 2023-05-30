@@ -59,6 +59,20 @@ public class CombatManager : GenericSingleton<CombatManager>
         Attack(_player, _enemy);
     }
 
+    public void ShowUsableItems()
+    {
+        CanvasManager.Instance.EnableUseItemButton(false);
+        ShowItems();
+    }
+
+    void ShowItems()
+    {
+        for (int i = 0; i < _player.consumableItems.Count; i++)
+        {
+            CanvasManager.Instance.CreateConsumableButton(_player.consumableItems[i]);
+        }
+    }
+
     void BasicDamage(int baseDamage, float criticalProbability, float missProbability)
     {
         //Set de damage
@@ -167,6 +181,8 @@ public class CombatManager : GenericSingleton<CombatManager>
             _thisTurn = CurrentTurn.EnemyTurn;
             //-----Inicia un nuevo Attack pero atacando enemigo
             Attack(_enemy, _player);
+            //-----Resetear las variables cambiadas por objetos
+            ResetPlayerStats();
             SetData?.Invoke(_enemy._thisName + " is going to attack");
         }
         else if (_thisTurn == CurrentTurn.EnemyTurn)//Si es turno del enemigo
@@ -181,12 +197,25 @@ public class CombatManager : GenericSingleton<CombatManager>
             _thisTurn = CurrentTurn.PlayerTurn;
             //-----Activa boton attack para que pueda atacar de nuevo
             CanvasManager.Instance.EnableAttackButton(true);
+            CanvasManager.Instance.EnableUseItemButton(true); 
             SetData?.Invoke(_player._thisName + "'s turn");
+            ResetPlayerDefense();
         }
         else if (_thisTurn == CurrentTurn.GameOver)//Si se acabó el combate
         {
             CanvasManager.Instance.ShowEndPanel(_player.health > 0); //Activo panel final. Si la vida del player es > 0 es porque habrá ganado
         }
+    }
+
+    void ResetPlayerStats()
+    {
+        _player._damage = _player._initialDamage;
+        _player._criticalProbability = _player._initialCriticalProbability;
+    }
+
+    void ResetPlayerDefense()
+    {
+        _player._protection = _player._initialProtection;
     }
 
     void EndCombat(string name)

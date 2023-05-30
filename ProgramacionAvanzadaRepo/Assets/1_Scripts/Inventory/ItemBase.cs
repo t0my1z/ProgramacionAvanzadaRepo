@@ -5,7 +5,7 @@ using Unity.UI;
 
 public class ItemBase : Interfaces.ISellable, Interfaces.IBuyable
 {
-    public string name;
+    public string Name;
     public Sprite icon;
 
 
