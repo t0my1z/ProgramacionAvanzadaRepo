@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.UI;
 
 [CreateAssetMenu(fileName = "newItemShop", menuName = "ProgramacionAvanzadaRepo/ItemShop", order = 1)]
-public class ItemBase : ScriptableObject, Interfaces.ISellable, Interfaces.IBuyable
+public abstract class ItemBase : ScriptableObject, Interfaces.ISellable, Interfaces.IBuyable
 {
     public string Name;
     public Sprite icon;
@@ -13,10 +13,21 @@ public class ItemBase : ScriptableObject, Interfaces.ISellable, Interfaces.IBuya
     public int capacitySlot;
     public int weight;
 
-    [SerializeField] int price;
-    [SerializeField] int sellingPrice;
+    [SerializeField] protected int price;
+    [SerializeField] protected int sellingPrice;
 
-    public bool Buy(Inventory inventoryRef)
+   
+
+    public int GetPrice()
+    {
+        return price;
+    }
+
+    public int GetSellingPrice()
+    {
+        return sellingPrice;
+    }
+    public virtual bool Buy(Inventory inventoryRef)
     {
         if (inventoryRef.CanBuyItem(price) && inventoryRef.AddItemToInventory(this))
         {
@@ -28,17 +39,7 @@ public class ItemBase : ScriptableObject, Interfaces.ISellable, Interfaces.IBuya
         return false;
     }
 
-    public int GetPrice()
-    {
-        return price;
-    }
-
-    public int GetSellingPrice()
-    {
-        return sellingPrice;
-    }
-
-    public void Sell(Inventory inventoryRef)
+    public virtual void Sell(Inventory inventoryRef)
     {
         inventoryRef.DropItemFromInventory(this);
         inventoryRef.currentGold += sellingPrice;

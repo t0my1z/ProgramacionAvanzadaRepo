@@ -12,7 +12,6 @@ using TMPro;
 public class ItemSelectableObject : MonoBehaviour
 {
     public ItemBase item;
-    public EquipmentItem equipItem;
 
     [SerializeField]
     private Image image;
