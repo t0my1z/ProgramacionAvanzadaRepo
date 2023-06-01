@@ -57,12 +57,12 @@ public class Tienda : MonoBehaviour
         }
         else 
         {
-            EquipmentItem equipItem = (EquipmentItem)selectedItem.item;
-            if (equipItem != null)
+           
+            if (selectedItem.item is EquipmentItem)
             {
-                inventoryRef.SellEquipmentItem(equipItem);
+                inventoryRef.SellEquipmentItem((EquipmentItem)selectedItem.item);
             }
-
+            selledItems.Add(selectedItem.item);
             selectedItem.item.Sell(inventoryRef);
             selector.gameObject.SetActive(false);
             Destroy(selectedItem.gameObject);
@@ -85,6 +85,7 @@ public class Tienda : MonoBehaviour
         }
         else
         {
+            DisplaySelledItems();
             buyPanel.SetActive(true);
             equipButton.SetActive(false);
             panelButtonText.text = "Inventario";
@@ -95,6 +96,23 @@ public class Tienda : MonoBehaviour
         isBuying = !isBuying;
         //desactivamos el selector
         selector.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Mostrar los objetos que has vendido de nuevo en la tienda
+    /// </summary>
+    List<ItemBase> selledItems = new List<ItemBase>();
+    void DisplaySelledItems()
+    {
+        for (int i = 0; i < selledItems.Count; i++)
+        {
+            GameObject inst = Instantiate(iconButtonPrefab, parentForIconPrefabs);
+            ItemSelectableObject itemSelect = inst.GetComponent<ItemSelectableObject>();
+            itemSelect.item = selledItems[i];
+            itemSelect.SetItem();
+        }
+
+        selledItems.Clear();
     }
 
     void UpdateCharacterMoney()

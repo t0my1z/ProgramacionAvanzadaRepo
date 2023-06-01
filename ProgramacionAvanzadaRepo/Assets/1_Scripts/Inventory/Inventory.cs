@@ -52,7 +52,6 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         RefreshStatsUI();
-       
     }
     /// Inventory
     public bool CanBuyItem(int itemCost)
