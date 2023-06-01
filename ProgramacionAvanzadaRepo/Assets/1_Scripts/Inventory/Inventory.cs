@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -214,12 +215,11 @@ public class Inventory : MonoBehaviour
     }
     public void EquipAction()
     {
-        if (selectedItem == null)
-        {
-            return;
-        }
+        if (selectedItem == null) return;
 
-        EquipNewItem(selectedItem.equipItem);
+        EquipmentItem itemToEquip = (EquipmentItem)selectedItem.item;
+
+        EquipNewItem(itemToEquip);
     }
     void RefreshStatsUI()
     {
@@ -240,7 +240,17 @@ public class Inventory : MonoBehaviour
         {
             GameObject newItem = Instantiate(selectObject, parentContent);
             newItem.GetComponent<ItemSelectableObject>().item = InventoryList[i];
+            newItem.GetComponent<ItemSelectableObject>().SetItem();
             slotsItemsUI.Add(newItem);
         }
+    }
+
+    public List<ConsumableItem> GetConsumableItemsFromInventory()
+    {
+        List<ConsumableItem> consumList = new List<ConsumableItem>();
+        consumList = InventoryList.OfType<ConsumableItem>().ToList();
+
+
+        return consumList;
     }
 }

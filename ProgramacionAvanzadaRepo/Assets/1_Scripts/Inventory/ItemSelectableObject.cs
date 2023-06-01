@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,22 +19,6 @@ public class ItemSelectableObject : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI costeTexto;
 
-    
-    private void Start()
-    {
-        equipItem = Resources.Load<EquipmentItem>("TestItems/" + item.name);
-
-        if (item != null)
-        {
-            image.sprite = item.icon;
-        }
-      
-        if (costeTexto != null)
-        {
-            costeTexto.text = item.GetPrice().ToString();
-        }
-     
-    }
 
     public virtual void SelectItem()
     {
@@ -41,6 +26,16 @@ public class ItemSelectableObject : MonoBehaviour
         Tienda.instance.selectedItem = this;
         Tienda.instance.selector.gameObject.SetActive(true);
         Tienda.instance.selector.position = this.GetComponent<RectTransform>().position;
+
+
+        if (item is ConsumableItem && !Tienda.instance.isBuying) Tienda.instance.SetEquipButton(false);
+        else if(!Tienda.instance.isBuying) Tienda.instance.SetEquipButton(true);
+    }
+
+    public void SetItem()
+    {
+        image.sprite = item.icon;
+        costeTexto.text = item.GetPrice().ToString();
     }
 
 }

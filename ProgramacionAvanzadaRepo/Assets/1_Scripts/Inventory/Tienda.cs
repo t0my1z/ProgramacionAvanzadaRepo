@@ -26,7 +26,8 @@ public class Tienda : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentCharacterMoney;
 
     public ItemSelectableObject selectedItem;
-
+    [SerializeField] GameObject iconButtonPrefab;
+    [SerializeField] Transform parentForIconPrefabs;
     [Header("Canvas refs")]
     [SerializeField] GameObject buyPanel;
     [SerializeField] GameObject sellPanel;
@@ -34,19 +35,17 @@ public class Tienda : MonoBehaviour
     [SerializeField] TextMeshProUGUI panelButtonText;
     [SerializeField] TextMeshProUGUI actionButtonText;
     public RectTransform selector;
-    private bool isBuying = true;
+    public bool isBuying = true;
 
     private void Start()
     {
         UpdateCharacterMoney();
-       
+        SetShop();
     }
-    public void action()
+    public void Action() 
     {
-        if (selectedItem == null)
-        { 
-            return;
-        }
+        if (selectedItem == null) return;
+
         if (isBuying) 
         {
             if (selectedItem.item.Buy(inventoryRef))
@@ -58,19 +57,21 @@ public class Tienda : MonoBehaviour
         }
         else 
         {
-            if (selectedItem.equipItem != null)
+            EquipmentItem equipItem = (EquipmentItem)selectedItem.item;
+            if (equipItem != null)
             {
-                inventoryRef.SellEquipmentItem(selectedItem.equipItem);
+                inventoryRef.SellEquipmentItem(equipItem);
             }
-           
+
             selectedItem.item.Sell(inventoryRef);
             selector.gameObject.SetActive(false);
             Destroy(selectedItem.gameObject);
             UpdateCharacterMoney();
+            
         }
     }
 
-    public void switchPanels()
+    public void SwitchPanels()
     {
         if (isBuying)
         {
@@ -100,5 +101,23 @@ public class Tienda : MonoBehaviour
     {
         currentCharacterMoney.text = inventoryRef.currentGold.ToString();
     }
+
+    void SetShop()
+    {
+        ItemBase[] itemsInResources = Resources.LoadAll<ItemBase>("TestItems");
+
+        for (int i = 0; i < itemsInResources.Length; i++)
+        {
+            GameObject inst = Instantiate(iconButtonPrefab, parentForIconPrefabs);
+            ItemSelectableObject itemSelect = inst.GetComponent<ItemSelectableObject>();
+            itemSelect.item = itemsInResources[i];
+            itemSelect.SetItem();
+        }
+    }
     
+    public void SetEquipButton(bool state)
+    {
+        equipButton.SetActive(state);
+    }
+
 }

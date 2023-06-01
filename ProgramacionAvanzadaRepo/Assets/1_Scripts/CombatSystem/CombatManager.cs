@@ -51,10 +51,24 @@ public class CombatManager : GenericSingleton<CombatManager>
         _player.Death += EndCombat;
     }
 
+    public void SetPlayer()
+    {
+        _player._initialDamage = _player.attack;
+        _player._initialProtection = _player.defence;
+        _player._protection = _player.defence;
+        _player._initialCriticalProbability = _player._criticalProbability;
+        Inventory playerInventory = _player.GetComponent<Inventory>();
+        if (playerInventory == null) return;
+        _player.consumableItems = playerInventory.GetConsumableItemsFromInventory();
+
+        _player.SetConsumableItems();
+    }
+
     public void PressAttackButton()
     {
         //Desactivar botón
         CanvasManager.Instance.EnableAttackButton(false);
+        CanvasManager.Instance.DestroyConsumableButtons();
         //Iniciar ataque del jugador
         Attack(_player, _enemy);
     }

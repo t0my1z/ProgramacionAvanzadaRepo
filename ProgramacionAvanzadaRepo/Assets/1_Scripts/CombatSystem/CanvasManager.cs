@@ -51,8 +51,15 @@ public class CanvasManager : GenericSingleton<CanvasManager>
             _consumableButton.onClick.AddListener(DestroyGameObject);
         }
 
+        public void SetImageToItemSprite()
+        {
+            _consumableButton.GetComponent<Image>().sprite = _item.icon;
+        }
+
+
         public void DestroyGameObject()
         {
+            _item._char.consumableItems.Remove(_item);
             Destroy(_consumableButton.gameObject);
         }
     }
@@ -78,6 +85,16 @@ public class CanvasManager : GenericSingleton<CanvasManager>
         else
         {
             _alertTxtObj.SetActive(true);
+        }
+    }
+
+    public void DisableConsumableButtons()
+    {
+        Button[] consumableButtons = _usableItemsPanel.GetComponentsInChildren<Button>();
+
+        for (int i = 0; i < consumableButtons.Length; i++)
+        {
+            Destroy(consumableButtons[i]);
         }
     }
 
@@ -130,6 +147,7 @@ public class CanvasManager : GenericSingleton<CanvasManager>
         GameObject instantiatedButton = Instantiate(_consumableItemsButtonPrefabs, _usableItemsPanel.transform);
         ConsumableItemUI consumItem = new ConsumableItemUI(instantiatedButton.GetComponent<Button>(), item);
         consumItem.SetButtonEventToItem();
+        consumItem.SetImageToItemSprite();
         instantiatedButton.GetComponentInChildren<TextMeshProUGUI>().text = item.Name;
     }
 

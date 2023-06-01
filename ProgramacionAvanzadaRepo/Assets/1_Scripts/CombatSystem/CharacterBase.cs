@@ -57,11 +57,6 @@ public class CharacterBase : MonoBehaviour, Interfaces.IDamageable
     {
         health = _maxHealth;
         _initialCriticalProbability = _criticalProbability;
-        _initialDamage = attack;
-        _initialProtection = _protection;
-        consumableItems.Add(new PrecisionPotion("Precision Potion", this));
-        consumableItems.Add(new RagePotion("Rage Potion", this)); 
-        consumableItems.Add(new RagePotion("Rage Potion", this)); 
     }
 
     private void Start()
@@ -77,5 +72,13 @@ public class CharacterBase : MonoBehaviour, Interfaces.IDamageable
     public void Die()
     {
         Death?.Invoke(_thisName + " was killed");
+    }
+
+    public void SetConsumableItems()
+    {
+        for (int i = 0; i < consumableItems.Count; i++)
+        {
+            consumableItems[i]._char = this;
+        }
     }
 }

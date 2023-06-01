@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: testEnemy4
   m_EditorClassIdentifier: 
   _enemyName: Enemy 4
-  _enemySprite: {fileID: 21300000, guid: f834955007449b0489ea368a09ad22e1, type: 3}
+  _enemySprite: {fileID: -603195180, guid: 70a7c19ebde1fbe429a60db42c9f7f4e, type: 3}
   _totalHealth: 50
   _damage: 12
   _protection: 5
