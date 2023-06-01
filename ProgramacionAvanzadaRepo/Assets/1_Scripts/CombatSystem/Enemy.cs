@@ -12,7 +12,7 @@ public class Enemy : CharacterBase
         _sprite.sprite = newData._enemySprite;
         _maxHealth = newData._totalHealth;
         health = _maxHealth;
-        _damage = newData._damage;
+        attack = newData._damage;
         _protection = newData._protection;
         _criticalProbability = newData._criticalProbability;
         _missProbability = newData._missProbability;

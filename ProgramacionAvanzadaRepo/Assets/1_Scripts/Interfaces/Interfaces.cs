@@ -6,13 +6,13 @@ public static class Interfaces
 {
     public interface IBuyable
     {
-        public void Buy() { }
+        public bool Buy(Inventory inventoryRef);
         public int GetPrice();
     }
 
     public interface ISellable
     {
-        public void Sell() { }
+        public void Sell(Inventory inventoryRef);
         public int GetSellingPrice();  
     }
 

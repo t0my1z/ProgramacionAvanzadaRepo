@@ -27,7 +27,25 @@ public class CharacterBase : MonoBehaviour, Interfaces.IDamageable
             }
         }
     }
-    public int _damage;
+    int _attack;
+    public int attack
+    {
+        get { return _attack; }
+        set
+        {
+            _attack = Mathf.Clamp(value, 0, 9999);
+        }
+    }
+    int _defence;
+    public int defence
+    {
+        get { return _defence; }
+        set
+        {
+            _defence = Mathf.Clamp(value, 0, 9999);
+        }
+    }
+
     public int _initialDamage; 
     public int _protection;
     public int _initialProtection; 
@@ -39,7 +57,7 @@ public class CharacterBase : MonoBehaviour, Interfaces.IDamageable
     {
         health = _maxHealth;
         _initialCriticalProbability = _criticalProbability;
-        _initialDamage = _damage;
+        _initialDamage = attack;
         _initialProtection = _protection;
         consumableItems.Add(new PrecisionPotion("Precision Potion", this));
         consumableItems.Add(new RagePotion("Rage Potion", this)); 

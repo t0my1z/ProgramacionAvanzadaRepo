@@ -118,10 +118,10 @@ public class CombatManager : GenericSingleton<CombatManager>
     IEnumerator AttackCoroutine(CharacterBase attacker, CharacterBase defender)
     {
         //Calcular daño (llamar al delegado de ataques)
-        GetTotalDamage?.Invoke(attacker._damage, attacker._criticalProbability, attacker._missProbability);
+        GetTotalDamage?.Invoke(attacker.attack, attacker._criticalProbability, attacker._missProbability);
         if (_turnDamage - defender._protection <= 0 && !_wasMissed) _turnDamage = defender._protection + 5; //Si la protección anulara por completo el ataque sin ser miss se hará un mínimo de 5pts de daño
         //Hacer daño
-        _floatNumberRef.SetFloatNumber(_turnDamage - defender._protection, attacker._damage - defender._protection, _thisTurn);
+        _floatNumberRef.SetFloatNumber(_turnDamage - defender._protection, attacker.attack - defender._protection, _thisTurn);
         SetAttackData(attacker._thisName, defender._thisName, defender._protection);
         defender.TakeDamage(_turnDamage - defender._protection);
         SetDefenderHealthBar(defender._maxHealth, defender.health);
@@ -209,7 +209,7 @@ public class CombatManager : GenericSingleton<CombatManager>
 
     void ResetPlayerStats()
     {
-        _player._damage = _player._initialDamage;
+        _player.attack = _player._initialDamage;
         _player._criticalProbability = _player._initialCriticalProbability;
     }
 

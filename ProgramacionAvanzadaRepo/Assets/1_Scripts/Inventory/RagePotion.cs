@@ -13,6 +13,6 @@ public class RagePotion : ConsumableItem
     }
     protected override void UseItem(CharacterBase charToAffect)
     {
-        charToAffect._damage *= damageMultiplier;
+        charToAffect.attack *= damageMultiplier;
     }
 }
