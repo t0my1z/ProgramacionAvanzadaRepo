@@ -37,7 +37,7 @@ public class EnemyManager : GenericSingleton<EnemyManager>
         test_Enemy_SO[] availableEnemies = Resources.LoadAll<test_Enemy_SO>("TestEnemies");
         for (int i = 0; i < e._numberOfEnemies; i++)
         {
-            _roundEnemies.AddItem(availableEnemies[i]);
+            _roundEnemies.AddItem(availableEnemies[UnityEngine.Random.Range(0, availableEnemies.Length)]);
         }
         //Segun el enemigo actual sacarlo de la pila
         _enemyObj.SetObjData(_roundEnemies.GetHead());

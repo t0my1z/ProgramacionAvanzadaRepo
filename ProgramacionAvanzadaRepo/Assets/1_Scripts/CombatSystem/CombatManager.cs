@@ -190,7 +190,7 @@ public class CombatManager : GenericSingleton<CombatManager>
             //--------Si ha muerto se avisa al EnemyManager para ver si quedan mas enemigos o si ya gana el Player (corta el resto de script con return)
 
             //--------Si no ha muerto sigue normal
-
+            CanvasManager.Instance.EnableUseItemButton(false);
             //-----Pasa a turno enemigo
             _thisTurn = CurrentTurn.EnemyTurn;
             //-----Inicia un nuevo Attack pero atacando enemigo

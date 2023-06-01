@@ -7,7 +7,7 @@ public class MusicManager : MonoBehaviour
 {
 
     public SoundScriptable[] musicArray;
-    public List<MusicInstance> allMusic;
+    public List<MusicInstance> allMusic = new List<MusicInstance>();
 
     AudioSource audiosource;
 
@@ -39,6 +39,7 @@ public class MusicManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(timeSong);
         Debug.Log("Next Music!!");
         indexMusic++;
+        if (indexMusic == allMusic.Count) indexMusic = 0;
         audiosource.clip = allMusic[indexMusic]._audioclip;
         PlayMusic();
         StartCoroutine(NextMusic(allMusic[indexMusic]._audioclip.length));

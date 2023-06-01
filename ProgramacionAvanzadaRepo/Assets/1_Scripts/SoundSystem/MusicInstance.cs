@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MusicInstance : MonoBehaviour
+public class MusicInstance 
 {
     int _volumen;
 

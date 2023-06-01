@@ -19,12 +19,13 @@ public class CanvasManager : GenericSingleton<CanvasManager>
     [SerializeField] TMP_InputField _numberInputField;
     [SerializeField] Button _attackButton;
     [SerializeField] Button _useItemButton;
-    [SerializeField] GameObject _consumableItemsButtonPrefabs;
-    [SerializeField] GameObject _usableItemsPanel;
     [SerializeField] Image _playerHealthBar;
     [SerializeField] Image _enemyHealthBar;
     [SerializeField] TextMeshProUGUI _enemyTmPro;
     [SerializeField] TextMeshProUGUI _dataTxtPro;
+
+    [SerializeField] GameObject _consumableItemsButtonPrefabs;
+    [SerializeField] GameObject _usableItemsPanel;
 
     private void Start()
     {
@@ -34,7 +35,7 @@ public class CanvasManager : GenericSingleton<CanvasManager>
 
     }
 
-    private class ConsumableItemUI 
+    private class ConsumableItemUI
     {
         Button _consumableButton;
         ConsumableItem _item;
@@ -64,12 +65,44 @@ public class CanvasManager : GenericSingleton<CanvasManager>
         }
     }
 
+    public void DisableConsumableButtons()
+    {
+        Button[] consumableButtons = _usableItemsPanel.GetComponentsInChildren<Button>();
+
+        for (int i = 0; i < consumableButtons.Length; i++)
+        {
+            Destroy(consumableButtons[i]);
+        }
+    }
+
+    public void EnableUseItemButton(bool enable)
+    {
+        _useItemButton.interactable = enable;
+    }
+
+    public void CreateConsumableButton(ConsumableItem item)
+    {
+        GameObject instantiatedButton = Instantiate(_consumableItemsButtonPrefabs, _usableItemsPanel.transform);
+        ConsumableItemUI consumItem = new ConsumableItemUI(instantiatedButton.GetComponent<Button>(), item);
+        consumItem.SetButtonEventToItem();
+        consumItem.SetImageToItemSprite();
+        instantiatedButton.GetComponentInChildren<TextMeshProUGUI>().text = item.Name;
+    }
+
+    public void DestroyConsumableButtons()
+    {
+        foreach (Button item in _usableItemsPanel.GetComponentsInChildren<Button>())
+        {
+            Destroy(item.gameObject);
+        }
+    }
+
     public void StartCombatButton()
     {
         if (int.TryParse(_numberInputField.text, out int number))
         {
             print(number);
-            if (number <= 0 || number > 4)
+            if (number <= 0)
             {
                 _alertTxtObj.SetActive(true);
                 return;
@@ -88,24 +121,9 @@ public class CanvasManager : GenericSingleton<CanvasManager>
         }
     }
 
-    public void DisableConsumableButtons()
-    {
-        Button[] consumableButtons = _usableItemsPanel.GetComponentsInChildren<Button>();
-
-        for (int i = 0; i < consumableButtons.Length; i++)
-        {
-            Destroy(consumableButtons[i]);
-        }
-    }
-
     public void EnableAttackButton(bool enable)
     {
         _attackButton.interactable = enable;
-    }
-
-    public void EnableUseItemButton(bool enable) 
-    {
-        _useItemButton.interactable = enable;
     }
 
     public void SetEnemyData(string name)
@@ -140,22 +158,5 @@ public class CanvasManager : GenericSingleton<CanvasManager>
     public void SetDataInfo(string newData)
     {
         _dataTxtPro.text = newData;
-    }
-
-    public void CreateConsumableButton(ConsumableItem item)
-    {
-        GameObject instantiatedButton = Instantiate(_consumableItemsButtonPrefabs, _usableItemsPanel.transform);
-        ConsumableItemUI consumItem = new ConsumableItemUI(instantiatedButton.GetComponent<Button>(), item);
-        consumItem.SetButtonEventToItem();
-        consumItem.SetImageToItemSprite();
-        instantiatedButton.GetComponentInChildren<TextMeshProUGUI>().text = item.Name;
-    }
-
-    public void DestroyConsumableButtons()
-    {
-        foreach (Button item in _usableItemsPanel.GetComponentsInChildren<Button>())
-        {
-            Destroy(item.gameObject);
-        }
     }
 }
